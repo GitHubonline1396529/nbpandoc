@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>nbpandoc module &mdash; nbpandoc 0.1.2.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=24272eba"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Version" href="about.html" />
+    <link rel="prev" title="Modules" href="modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            nbpandoc
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="example.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example.html#examples">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="build.html">Building the Executable</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Modules</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">nbpandoc module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pandoc-jupyter-notebook-convert-tool">Pandoc Jupyter Notebook Convert Tool</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#nbpandoc.apppend_pandoc_arguments"><code class="docutils literal notranslate"><span class="pre">apppend_pandoc_arguments()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#nbpandoc.convert_to_pdf"><code class="docutils literal notranslate"><span class="pre">convert_to_pdf()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#nbpandoc.extract_notebook_metadata"><code class="docutils literal notranslate"><span class="pre">extract_notebook_metadata()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#nbpandoc.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#nbpandoc.replace_underscore_with_hyphen"><code class="docutils literal notranslate"><span class="pre">replace_underscore_with_hyphen()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#nbpandoc.write_metadata_to_file"><code class="docutils literal notranslate"><span class="pre">write_metadata_to_file()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="about.html">Version</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about.html#license">License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">nbpandoc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">Modules</a></li>
+      <li class="breadcrumb-item active">nbpandoc module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/nbpandoc.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-nbpandoc">
+<span id="nbpandoc-module"></span><h1>nbpandoc module<a class="headerlink" href="#module-nbpandoc" title="Link to this heading"></a></h1>
+<section id="pandoc-jupyter-notebook-convert-tool">
+<h2>Pandoc Jupyter Notebook Convert Tool<a class="headerlink" href="#pandoc-jupyter-notebook-convert-tool" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">nbpandoc</span></code> is a command-line utility to convert Markdown or Jupyter notebook 
+files to LaTeX PDF via Pandoc, including full notebook metadata. The Project
+only contains one script (This script, I mean the one you are now browsing), and
+theoretically speaking, you can run this script directly by using</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-u<span class="w"> </span>nbpandoc.py<span class="w"> </span>&lt;filename&gt;.ipynb
+</pre></div>
+</div>
+<p>to convert a Jupyter Notebook to PDF, but I still recomend you run the build,
+which is a standalone executable file. You can place it anywhere on 
+your PC and include it in your system <code class="docutils literal notranslate"><span class="pre">PATH</span></code> to call it flexibly and 
+globally.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>nbpandoc<span class="w"> </span>&lt;filename&gt;.ipynb
+</pre></div>
+</div>
+<p>See the document for more details.</p>
+</section>
+<dl class="py function">
+<dt class="sig sig-object py" id="nbpandoc.apppend_pandoc_arguments">
+<span class="sig-prename descclassname"><span class="pre">nbpandoc.</span></span><span class="sig-name descname"><span class="pre">apppend_pandoc_arguments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pandoc_args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nbpandoc.html#apppend_pandoc_arguments"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nbpandoc.apppend_pandoc_arguments" title="Link to this definition"></a></dt>
+<dd><p>Analyzes and processes the Pandoc arguments provided in the JSON metadata of
+a Jupyter Notebook file and extends the given command list accordingly.</p>
+<section id="parameters">
+<h2>Parameters<a class="headerlink" href="#parameters" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt>pandoc_args<span class="classifier">dict, str or list</span></dt><dd><p>The Pandoc arguments to be processed. It can be:</p>
+<ul class="simple">
+<li><p>A dictionary where keys are argument names and values are their
+corresponding values.</p></li>
+<li><p>A string containing space-separated Pandoc flags.</p></li>
+<li><p>A list of strings, where each string is a Pandoc flag or argument.</p></li>
+</ul>
+</dd>
+<dt>command<span class="classifier">list</span></dt><dd><p>The list of command-line arguments to which the processed Pandoc
+arguments will be appended.</p>
+</dd>
+</dl>
+</section>
+<section id="returns">
+<h2>Returns<a class="headerlink" href="#returns" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt>list</dt><dd><p>The updated command list with the processed Pandoc arguments appended.
+If an invalid item is encountered in the <code class="docutils literal notranslate"><span class="pre">pandoc_args</span></code> list or if the
+<code class="docutils literal notranslate"><span class="pre">pandoc_args</span></code> type is unsupported.</p>
+</dd>
+</dl>
+</section>
+<section id="raises">
+<h2>Raises<a class="headerlink" href="#raises" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt>ValueError</dt><dd><p>“Invalid pandoc_args item: {item}” if an item in <code class="docutils literal notranslate"><span class="pre">pandoc_args</span></code> is not
+an instance of class or of a subclass thereof.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="nbpandoc.convert_to_pdf">
+<span class="sig-prename descclassname"><span class="pre">nbpandoc.</span></span><span class="sig-name descname"><span class="pre">convert_to_pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'--pdf-engine=xelatex'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nbpandoc.html#convert_to_pdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nbpandoc.convert_to_pdf" title="Link to this definition"></a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">convert_to_pdf</span></code> function converts a Markdown or Jupyter notebook file 
+to PDF using Pandoc with customizable flags based on metadata handling.</p>
+<section id="id1">
+<h2>Parameters<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt>filename<span class="classifier">str</span></dt><dd><p>The <code class="docutils literal notranslate"><span class="pre">filename</span></code> parameter in the <code class="docutils literal notranslate"><span class="pre">convert_to_pdf</span></code> function is a
+string that represents the path to the input file. This file can be 
+either a Markdown file (<code class="docutils literal notranslate"><span class="pre">.md</span></code>) or a Jupyter notebook file (<code class="docutils literal notranslate"><span class="pre">.ipynb</span></code>)</p>
+</dd>
+<dt>flags<span class="classifier">str, optional</span></dt><dd><p>The <code class="docutils literal notranslate"><span class="pre">flags</span></code> parameter in the <code class="docutils literal notranslate"><span class="pre">convert_to_pdf</span></code> function is an 
+optional string that allows you to specify extra Pandoc flags to include
+during the conversion process. By default, the <code class="docutils literal notranslate"><span class="pre">flags</span></code> parameter is 
+set to <code class="docutils literal notranslate"><span class="pre">--pdf-engine=xelatex</span></code>, but you can provide additional flags 
+as, defaults to <code class="docutils literal notranslate"><span class="pre">--pdf-engine=xelatex</span></code> (optional)</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="nbpandoc.extract_notebook_metadata">
+<span class="sig-prename descclassname"><span class="pre">nbpandoc.</span></span><span class="sig-name descname"><span class="pre">extract_notebook_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nbpandoc.html#extract_notebook_metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nbpandoc.extract_notebook_metadata" title="Link to this definition"></a></dt>
+<dd><p>This function reads a Jupyter notebook file in JSON format and retrieves the 
+metadata section, which typically contains information about the notebook 
+such as its name, authors, and other custom metadata.</p>
+<section id="notes">
+<h2>Notes<a class="headerlink" href="#notes" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>The function handles exceptions gracefully and ensures that an empty 
+dictionary is returned in case of any errors (e.g., file not found, 
+invalid JSON format).</p></li>
+<li><p>The metadata section is optional in Jupyter notebooks, so it may not 
+always be present.</p></li>
+</ul>
+</section>
+<section id="id2">
+<h2>Parameters<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt>filename<span class="classifier">str</span></dt><dd><p>Path to the Jupyter notebook file (.ipynb).</p>
+</dd>
+</dl>
+</section>
+<section id="id3">
+<h2>Returns<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt>dict</dt><dd><p>The metadata dictionary from the notebook. If the metadata section is
+not found or an error occurs during file reading, an empty dictionary is
+returned.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="nbpandoc.main">
+<span class="sig-prename descclassname"><span class="pre">nbpandoc.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/nbpandoc.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nbpandoc.main" title="Link to this definition"></a></dt>
+<dd><p>The main function parses command-line arguments and runs the conversion of a
+Markdown or Jupyter notebook file to PDF using Pandoc with custom flags.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="nbpandoc.replace_underscore_with_hyphen">
+<span class="sig-prename descclassname"><span class="pre">nbpandoc.</span></span><span class="sig-name descname"><span class="pre">replace_underscore_with_hyphen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nbpandoc.html#replace_underscore_with_hyphen"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nbpandoc.replace_underscore_with_hyphen" title="Link to this definition"></a></dt>
+<dd><p>Converts dictionary keys from underscore_style to hyphen-style for CLI 
+arguments. This function takes a dictionary where the keys are in 
+underscore_style and returns a new dictionary where the keys are converted 
+to hyphen-style. This is particularly useful for preparing options to be 
+passed as command-line arguments.</p>
+<section id="id4">
+<h2>Parameters<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt>options<span class="classifier">dict</span></dt><dd><p>A dictionary containing keys in underscore_style.</p>
+</dd>
+</dl>
+</section>
+<section id="id5">
+<h2>Returns<a class="headerlink" href="#id5" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt>dict</dt><dd><p>A new dictionary with the keys converted to hyphen-style.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="nbpandoc.write_metadata_to_file">
+<span class="sig-prename descclassname"><span class="pre">nbpandoc.</span></span><span class="sig-name descname"><span class="pre">write_metadata_to_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nbpandoc.html#write_metadata_to_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nbpandoc.write_metadata_to_file" title="Link to this definition"></a></dt>
+<dd><p>The function <code class="docutils literal notranslate"><span class="pre">write_metadata_to_file</span></code> writes a metadata dictionary to a 
+temporary JSON file for pandoc.</p>
+<section id="id6">
+<h2>Parameters<a class="headerlink" href="#id6" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt>metadata<span class="classifier">dict</span></dt><dd><p>The <code class="docutils literal notranslate"><span class="pre">metadata</span></code> parameter is a dictionary containing information that 
+needs to be written to a temporary JSON file for use with Pandoc. This 
+metadata could include details such as document title, author, date, and
+any other relevant information needed for document processing.</p>
+</dd>
+</dl>
+</section>
+<section id="id7">
+<h2>Returns<a class="headerlink" href="#id7" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt>str</dt><dd><p>The function <code class="docutils literal notranslate"><span class="pre">write_metadata_to_file</span></code> returns the path to the
+temporary metadata file that was created and written with the provided 
+metadata dictionary.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="modules.html" class="btn btn-neutral float-left" title="Modules" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="about.html" class="btn btn-neutral float-right" title="Version" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, GitHubonline1396529.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>nbpandoc &mdash; nbpandoc 0.1.2.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=24272eba"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            nbpandoc
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../example.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../example.html#examples">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../build.html">Building the Executable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">Version</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html#license">License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">nbpandoc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Module code</a></li>
+      <li class="breadcrumb-item active">nbpandoc</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for nbpandoc</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Pandoc Jupyter Notebook Convert Tool</span>
+<span class="sd">====================================</span>
+
+<span class="sd">``nbpandoc`` is a command-line utility to convert Markdown or Jupyter notebook </span>
+<span class="sd">files to LaTeX PDF via Pandoc, including full notebook metadata. The Project</span>
+<span class="sd">only contains one script (This script, I mean the one you are now browsing), and</span>
+<span class="sd">theoretically speaking, you can run this script directly by using</span>
+
+<span class="sd">.. code-block:: shell</span>
+
+<span class="sd">    python -u nbpandoc.py &lt;filename&gt;.ipynb</span>
+<span class="sd">    </span>
+<span class="sd">to convert a Jupyter Notebook to PDF, but I still recomend you run the build,</span>
+<span class="sd">which is a standalone executable file. You can place it anywhere on </span>
+<span class="sd">your PC and include it in your system ``PATH`` to call it flexibly and </span>
+<span class="sd">globally.</span>
+
+<span class="sd">.. code-block:: shell</span>
+
+<span class="sd">    nbpandoc &lt;filename&gt;.ipynb</span>
+
+<span class="sd">See the document for more details.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">tempfile</span>
+
+
+<div class="viewcode-block" id="extract_notebook_metadata">
+<a class="viewcode-back" href="../nbpandoc.html#nbpandoc.extract_notebook_metadata">[docs]</a>
+<span class="k">def</span> <span class="nf">extract_notebook_metadata</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function reads a Jupyter notebook file in JSON format and retrieves the </span>
+<span class="sd">    metadata section, which typically contains information about the notebook </span>
+<span class="sd">    such as its name, authors, and other custom metadata.</span>
+<span class="sd">        </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    </span>
+<span class="sd">    * The function handles exceptions gracefully and ensures that an empty </span>
+<span class="sd">      dictionary is returned in case of any errors (e.g., file not found, </span>
+<span class="sd">      invalid JSON format).</span>
+<span class="sd">    * The metadata section is optional in Jupyter notebooks, so it may not </span>
+<span class="sd">      always be present.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    filename : str</span>
+<span class="sd">        Path to the Jupyter notebook file (.ipynb).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dict</span>
+<span class="sd">        The metadata dictionary from the notebook. If the metadata section is</span>
+<span class="sd">        not found or an error occurs during file reading, an empty dictionary is</span>
+<span class="sd">        returned.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">nb</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">nb</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;metadata&quot;</span><span class="p">,</span> <span class="p">{})</span> <span class="ow">or</span> <span class="p">{}</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{}</span></div>
+
+
+
+<div class="viewcode-block" id="write_metadata_to_file">
+<a class="viewcode-back" href="../nbpandoc.html#nbpandoc.write_metadata_to_file">[docs]</a>
+<span class="k">def</span> <span class="nf">write_metadata_to_file</span><span class="p">(</span><span class="n">metadata</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The function ``write_metadata_to_file`` writes a metadata dictionary to a </span>
+<span class="sd">    temporary JSON file for pandoc.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    metadata : dict</span>
+<span class="sd">        The ``metadata`` parameter is a dictionary containing information that </span>
+<span class="sd">        needs to be written to a temporary JSON file for use with Pandoc. This </span>
+<span class="sd">        metadata could include details such as document title, author, date, and</span>
+<span class="sd">        any other relevant information needed for document processing. </span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str</span>
+<span class="sd">        The function ``write_metadata_to_file`` returns the path to the</span>
+<span class="sd">        temporary metadata file that was created and written with the provided </span>
+<span class="sd">        metadata dictionary.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">tmp</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span>
+        <span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="s2">&quot;.json&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span>
+    <span class="p">)</span>
+    <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span> <span class="n">tmp</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">tmp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">tmp</span><span class="o">.</span><span class="n">name</span></div>
+
+
+
+<div class="viewcode-block" id="replace_underscore_with_hyphen">
+<a class="viewcode-back" href="../nbpandoc.html#nbpandoc.replace_underscore_with_hyphen">[docs]</a>
+<span class="k">def</span> <span class="nf">replace_underscore_with_hyphen</span><span class="p">(</span><span class="n">options</span><span class="p">):</span>        
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts dictionary keys from underscore_style to hyphen-style for CLI </span>
+<span class="sd">    arguments. This function takes a dictionary where the keys are in </span>
+<span class="sd">    underscore_style and returns a new dictionary where the keys are converted </span>
+<span class="sd">    to hyphen-style. This is particularly useful for preparing options to be </span>
+<span class="sd">    passed as command-line arguments.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    options : dict</span>
+<span class="sd">        A dictionary containing keys in underscore_style.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dict</span>
+<span class="sd">        A new dictionary with the keys converted to hyphen-style.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">{</span><span class="n">key</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">):</span> <span class="n">value</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">options</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span></div>
+
+
+
+<div class="viewcode-block" id="apppend_pandoc_arguments">
+<a class="viewcode-back" href="../nbpandoc.html#nbpandoc.apppend_pandoc_arguments">[docs]</a>
+<span class="k">def</span> <span class="nf">apppend_pandoc_arguments</span><span class="p">(</span><span class="n">pandoc_args</span><span class="p">,</span> <span class="n">command</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Analyzes and processes the Pandoc arguments provided in the JSON metadata of</span>
+<span class="sd">    a Jupyter Notebook file and extends the given command list accordingly.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pandoc_args : dict\, str or list</span>
+<span class="sd">        The Pandoc arguments to be processed. It can be:</span>
+<span class="sd">        </span>
+<span class="sd">        * A dictionary where keys are argument names and values are their</span>
+<span class="sd">          corresponding values.</span>
+<span class="sd">        * A string containing space-separated Pandoc flags.</span>
+<span class="sd">        * A list of strings, where each string is a Pandoc flag or argument.</span>
+<span class="sd">    command : list</span>
+<span class="sd">        The list of command-line arguments to which the processed Pandoc</span>
+<span class="sd">        arguments will be appended.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list</span>
+<span class="sd">        The updated command list with the processed Pandoc arguments appended.</span>
+<span class="sd">        If an invalid item is encountered in the ``pandoc_args`` list or if the</span>
+<span class="sd">        ``pandoc_args`` type is unsupported.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        &quot;Invalid pandoc_args item: {item}&quot; if an item in ``pandoc_args`` is not</span>
+<span class="sd">        an instance of class or of a subclass thereof.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Dict: convert keys and values</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pandoc_args</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="n">pandoc_args</span> <span class="o">=</span> <span class="n">replace_underscore_with_hyphen</span><span class="p">(</span><span class="n">pandoc_args</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">pandoc_args</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">cli_key</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;--</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&quot;</span>
+
+            <span class="c1"># List value: JSON-style</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="n">command</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cli_key</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">value</span><span class="p">,</span><span class="w"> </span><span class="n">ensure_ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">command</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cli_key</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="c1"># String: split into flags</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pandoc_args</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">command</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">pandoc_args</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
+    <span class="c1"># List of strings: each is a flag</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pandoc_args</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">pandoc_args</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="n">command</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid pandoc_args item: </span><span class="si">{</span><span class="n">item</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">command</span></div>
+
+
+
+<div class="viewcode-block" id="convert_to_pdf">
+<a class="viewcode-back" href="../nbpandoc.html#nbpandoc.convert_to_pdf">[docs]</a>
+<span class="k">def</span> <span class="nf">convert_to_pdf</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="s2">&quot;--pdf-engine=xelatex&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``convert_to_pdf`` function converts a Markdown or Jupyter notebook file </span>
+<span class="sd">    to PDF using Pandoc with customizable flags based on metadata handling.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    filename : str</span>
+<span class="sd">        The ``filename`` parameter in the ``convert_to_pdf`` function is a</span>
+<span class="sd">        string that represents the path to the input file. This file can be </span>
+<span class="sd">        either a Markdown file (``.md``) or a Jupyter notebook file (``.ipynb``)</span>
+<span class="sd">    flags : str\, optional</span>
+<span class="sd">        The ``flags`` parameter in the ``convert_to_pdf`` function is an </span>
+<span class="sd">        optional string that allows you to specify extra Pandoc flags to include</span>
+<span class="sd">        during the conversion process. By default, the ``flags`` parameter is </span>
+<span class="sd">        set to ``--pdf-engine=xelatex``, but you can provide additional flags </span>
+<span class="sd">        as, defaults to ``--pdf-engine=xelatex`` (optional)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">base</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
+    <span class="c1"># Note that finally I decide not to give any presupposed pandoc option, and</span>
+    <span class="c1"># all the flags should be specified in the ``&quot;pandoc_args&quot;`` flag. This </span>
+    <span class="c1"># design can make this script to be more flexible. So I commented the</span>
+    <span class="c1"># following several lines.</span>
+
+    <span class="c1"># output_filename = f&quot;{base}.pdf&quot;</span>
+
+    <span class="c1"># Base command</span>
+    <span class="n">command</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;pandoc&quot;</span><span class="p">,</span>
+        <span class="n">filename</span><span class="p">,</span>
+        <span class="c1"># &quot;--standalone&quot;,</span>
+        <span class="c1"># &quot;--to=pdf&quot;,</span>
+        <span class="c1"># f&quot;--output={output_filename}&quot;,</span>
+    <span class="p">]</span>
+
+    <span class="c1"># Include CLI flags</span>
+    <span class="k">if</span> <span class="n">flags</span><span class="p">:</span>
+        <span class="n">command</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">flags</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
+
+    <span class="c1"># If input is a Jupyter notebook, process metadata</span>
+    <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.ipynb&quot;</span><span class="p">):</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="n">extract_notebook_metadata</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="c1"># Write full metadata to file for Pandoc</span>
+        <span class="k">if</span> <span class="n">metadata</span><span class="p">:</span>
+            <span class="n">meta_file</span> <span class="o">=</span> <span class="n">write_metadata_to_file</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+            <span class="n">command</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;--metadata-file=</span><span class="si">{</span><span class="n">meta_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Here we&#39;re going to test whether ``&quot;output&quot;`` is specified in Jupyter</span>
+        <span class="c1"># metadata. If not, it will be ``&quot;{base}.pdf&quot;``.</span>
+        <span class="n">output_file</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;output&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">output_file</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">output_file</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base</span><span class="si">}</span><span class="s2">.pdf&quot;</span>
+            <span class="n">command</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;--to=pdf&quot;</span><span class="p">)</span>
+            <span class="n">command</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;--output=</span><span class="si">{</span><span class="n">output_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Process custom pandoc_args</span>
+        <span class="n">pandoc_args</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;pandoc_args&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">pandoc_args</span><span class="p">:</span>
+            <span class="n">command</span> <span class="o">=</span> <span class="n">apppend_pandoc_arguments</span><span class="p">(</span><span class="n">pandoc_args</span><span class="p">,</span> <span class="n">command</span><span class="p">)</span>
+
+    <span class="c1"># Execute the Pandoc command</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Executing command: &quot;</span><span class="p">,</span> <span class="n">command</span><span class="p">)</span>
+        <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">check</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Successfully converted </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">output_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">CalledProcessError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error during conversion: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="main">
+<a class="viewcode-back" href="../nbpandoc.html#nbpandoc.main">[docs]</a>
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The main function parses command-line arguments and runs the conversion of a</span>
+<span class="sd">    Markdown or Jupyter notebook file to PDF using Pandoc with custom flags.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Convert a Markdown or Jupyter notebook file to PDF via &quot;</span>
+        <span class="s2">&quot;Pandoc, including full notebook metadata and custom pandoc_args.&quot;</span>
+    <span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;filename&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;The input file to convert (.md or .ipynb).&quot;</span>
+    <span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--flags&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;--pdf-engine=xelatex&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Extra Pandoc flags (default: --pdf-engine=xelatex).&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="n">convert_to_pdf</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">flags</span><span class="p">)</span></div>
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, GitHubonline1396529.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

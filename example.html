@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Usage &mdash; nbpandoc 0.1.2.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=24272eba"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Building the Executable" href="build.html" />
+    <link rel="prev" title="Pandoc Jupyter Notebook Convert Tool" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            nbpandoc
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#examples">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#specify-export-format-in-jupyter-metadata">Specify Export Format in Jupyter Metadata</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#specify-extra-pandoc-options-in-command-line">Specify Extra Pandoc Options in Command Line</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#specify-pandoc-options-in-notebook-metadata">Specify Pandoc Options in Notebook Metadata</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#a-demo-file">A Demo File</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="build.html">Building the Executable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about.html">Version</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about.html#license">License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">nbpandoc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Usage</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/example.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="usage">
+<h1>Usage<a class="headerlink" href="#usage" title="Link to this heading"></a></h1>
+<p>To convert a Jupyter Notebook file into PDF, you can use:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nbpandoc</span> <span class="o">&lt;</span><span class="n">filename</span><span class="o">&gt;.</span><span class="n">ipynb</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Before running the command, make sure that Pandoc is correctly installed and
+included in your system’s <code class="docutils literal notranslate"><span class="pre">PATH</span></code>. You can verify this by running:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pandoc<span class="w"> </span>--version
+</pre></div>
+</div>
+<p>If Pandoc is not installed, refer to the official Pandoc documentation for
+<a class="reference external" href="https://pandoc.org/installing.html">installation instructions</a>.</p>
+</div>
+<p>Flags of <code class="docutils literal notranslate"><span class="pre">pandoc</span></code> command can be assigned in the metadata of the Notebook. See
+<a class="reference internal" href="#examples"><span class="std std-ref">Examples</span></a> for more details.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">--help</span></code> option can be used to display a list of available commands
+and their descriptions.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>usage: nbpandoc.exe [-h] [--flags FLAGS] filename
+
+Convert a Markdown or Jupyter notebook file to PDF via Pandoc, including
+full notebook metadata and custom pandoc_args.
+
+positional arguments:
+  filename       The input file to convert (.md or .ipynb).
+
+optional arguments:
+  -h, --help     show this help message and exit
+  --flags FLAGS  Extra Pandoc flags (default: --pdf-engine=xelatex).
+</pre></div>
+</div>
+</div>
+</section>
+<section id="examples">
+<h1>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h1>
+<section id="specify-export-format-in-jupyter-metadata">
+<span id="id1"></span><h2>Specify Export Format in Jupyter Metadata<a class="headerlink" href="#specify-export-format-in-jupyter-metadata" title="Link to this heading"></a></h2>
+<p>At the end of a typical <code class="docutils literal notranslate"><span class="pre">*.ipynb</span></code> file, you will find a <code class="docutils literal notranslate"><span class="pre">&quot;metadata&quot;</span></code> section
+written in JSON. If left unedited, this section retains its default style,
+automatically generated by Jupyter. It may look like the following:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="nt">&quot;metadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 2</span><span class="w">  </span><span class="nt">&quot;kernelspec&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 3</span><span class="w">   </span><span class="nt">&quot;display_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Python 3&quot;</span><span class="p">,</span>
+<span class="linenos"> 4</span><span class="w">   </span><span class="nt">&quot;language&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;python&quot;</span><span class="p">,</span>
+<span class="linenos"> 5</span><span class="w">   </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;python3&quot;</span>
+<span class="linenos"> 6</span><span class="w">  </span><span class="p">},</span>
+<span class="linenos"> 7</span><span class="w">  </span><span class="nt">&quot;language_info&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 8</span><span class="w">   </span><span class="nt">&quot;codemirror_mode&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 9</span><span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ipython&quot;</span><span class="p">,</span>
+<span class="linenos">10</span><span class="w">    </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span>
+<span class="linenos">11</span><span class="w">   </span><span class="p">},</span>
+<span class="linenos">12</span><span class="w">   </span><span class="nt">&quot;file_extension&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;.py&quot;</span><span class="p">,</span>
+<span class="linenos">13</span><span class="w">   </span><span class="nt">&quot;mimetype&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;text/x-python&quot;</span><span class="p">,</span>
+<span class="linenos">14</span><span class="w">   </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;python&quot;</span><span class="p">,</span>
+<span class="linenos">15</span><span class="w">   </span><span class="nt">&quot;nbconvert_exporter&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;python&quot;</span><span class="p">,</span>
+<span class="linenos">16</span><span class="w">   </span><span class="nt">&quot;pygments_lexer&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ipython3&quot;</span><span class="p">,</span>
+<span class="linenos">17</span><span class="w">   </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;3.9.10&quot;</span>
+<span class="linenos">18</span><span class="w">  </span><span class="p">}</span>
+<span class="linenos">19</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>When using this script, you can customize the export format by adding or
+modifying metadata fields such as <code class="docutils literal notranslate"><span class="pre">title</span></code> and <code class="docutils literal notranslate"><span class="pre">author</span></code> in the Jupyter
+Notebook’s metadata.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To edit the metadata of a Jupyter Notebook file, you can:</p>
+<ol class="arabic simple">
+<li><p>Use the Jupyter interface by clicking the <code class="docutils literal notranslate"><span class="pre">Edit</span></code> tab and selecting
+<code class="docutils literal notranslate"><span class="pre">Edit</span> <span class="pre">Notebook</span> <span class="pre">Metadata</span></code> from the menu.</p></li>
+<li><p>Open the notebook in a plain text editor, scroll to the bottom, and locate
+the <code class="docutils literal notranslate"><span class="pre">&quot;metadata&quot;</span></code> key in the JSON text.</p></li>
+</ol>
+</div>
+<p>Here is an example of customized metadata:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="nt">&quot;metadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">2</span><span class="w">   </span><span class="c1">// ...</span>
+<span class="linenos">3</span><span class="w">   </span><span class="nt">&quot;documentclass&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;article&quot;</span><span class="p">,</span>
+<span class="linenos">4</span><span class="w">   </span><span class="nt">&quot;classoption&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;11pt&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;a4paper&quot;</span><span class="p">],</span>
+<span class="linenos">5</span><span class="w">   </span><span class="nt">&quot;geometry&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;margin=1in&quot;</span><span class="p">,</span>
+<span class="linenos">6</span><span class="w">   </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;The Document Title&quot;</span><span class="p">,</span>
+<span class="linenos">7</span><span class="w">   </span><span class="nt">&quot;author&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;Author A&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Author B&quot;</span><span class="p">]</span>
+<span class="linenos">8</span><span class="w">   </span><span class="c1">// ...</span>
+<span class="linenos">9</span><span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="specify-extra-pandoc-options-in-command-line">
+<h2>Specify Extra Pandoc Options in Command Line<a class="headerlink" href="#specify-extra-pandoc-options-in-command-line" title="Link to this heading"></a></h2>
+<p>The <cite>–flags</cite> option allows you to pass additional arguments directly to Pandoc.
+This gives you fine-grained control over how your document is processed and
+converted.</p>
+<p>For example, you can specify a custom PDF engine, enable specific extensions, or
+adjust formatting options. This is particularly useful when you need to
+customize the output to meet specific requirements.</p>
+<p>Use the following command to convert:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nbpandoc<span class="w"> </span>--flags<span class="o">=</span><span class="s2">&quot;--pdf-engine=lualatex&quot;</span><span class="w"> </span>document.ipynb
+</pre></div>
+</div>
+<p>In this example:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--pdf-engine=lualatex</span></code> tells Pandoc to use the <code class="docutils literal notranslate"><span class="pre">lualatex</span></code> engine for</p></li>
+<li><p>generating PDF files. This is helpful if you need advanced typesetting
+features or compatibility with certain LaTeX packages.</p></li>
+</ul>
+<p>You can replace <code class="docutils literal notranslate"><span class="pre">--pdf-engine=lualatex</span></code> with other Pandoc options depending on
+your needs. For instance:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--toc</span></code> adds a table of contents to the output.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--highlight-style=pygments</span></code> specifies a syntax highlighting style for code
+blocks.</p></li>
+<li><p><cite>–metadata=title:”My Document”</cite> sets metadata like the document title.</p></li>
+</ul>
+<p>By combining multiple options in the <code class="docutils literal notranslate"><span class="pre">--flags</span></code> argument, you can fully
+customize the conversion process. For example:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nbpandoc<span class="w"> </span>--flags<span class="o">=</span><span class="s2">&quot;--toc --pdf-engine=xelatex --metadata=author:&#39;John Doe&#39;&quot;</span><span class="w"> </span><span class="se">\</span>
+document.ipynb
+</pre></div>
+</div>
+<p>This command generates a PDF with a table of contents, uses the <code class="docutils literal notranslate"><span class="pre">xelatex</span></code>
+engine, and sets the author metadata to “John Doe”.</p>
+</section>
+<section id="specify-pandoc-options-in-notebook-metadata">
+<h2>Specify Pandoc Options in Notebook Metadata<a class="headerlink" href="#specify-pandoc-options-in-notebook-metadata" title="Link to this heading"></a></h2>
+<p>You can also specify Pandoc options directly in the Notebook’s metadata. This
+approach allows you to define advanced configurations without needing to pass
+them as command-line arguments.</p>
+<p>For example, you can add the following to the metadata section of your Jupyter
+Notebook:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="nt">&quot;metadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">2</span><span class="w">   </span><span class="nt">&quot;pandoc_args&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">3</span><span class="w">      </span><span class="nt">&quot;shift_heading_level_by&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span>
+<span class="linenos">4</span><span class="w">      </span><span class="nt">&quot;lua_filter&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;callout2latex.lua&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;default_table_width.lua&quot;</span><span class="p">]</span>
+<span class="linenos">5</span><span class="w">   </span><span class="p">}</span>
+<span class="linenos">6</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>This configuration will automatically include the specified options when the
+Notebook is converted. The resulting Pandoc command will include the following
+lines:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pandoc<span class="w"> </span>&lt;...&gt;<span class="w"> </span><span class="se">\</span>
+--shift-heading-level-by<span class="o">=</span>-1<span class="w"> </span><span class="se">\</span>
+--lua-filter<span class="o">=</span>callout2latex.lua<span class="w"> </span><span class="se">\</span>
+--lua-filter<span class="o">=</span>default_table_width.lua
+</pre></div>
+</div>
+<p>Note:</p>
+<ul class="simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">shift_heading_level_by</span></code> option adjusts the heading levels in the
+document. For example, a level-2 heading becomes level-1.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">lua_filter</span></code> option applies Lua filters to customize the conversion
+process. In this example, the filters <code class="docutils literal notranslate"><span class="pre">callout2latex.lua</span></code> and
+<code class="docutils literal notranslate"><span class="pre">default_table_width.lua</span></code> are applied.</p></li>
+</ul>
+<p>If the <code class="docutils literal notranslate"><span class="pre">&quot;output&quot;</span></code> field is not specified in <code class="docutils literal notranslate"><span class="pre">&quot;pandoc_args&quot;</span></code>, the default
+behavior is to convert the Jupyter Notebook to a PDF file.</p>
+</section>
+<section id="a-demo-file">
+<h2>A Demo File<a class="headerlink" href="#a-demo-file" title="Link to this heading"></a></h2>
+<p>You can find the demo file <code class="docutils literal notranslate"><span class="pre">intro.ipynb</span></code> and <code class="docutils literal notranslate"><span class="pre">intro.pdf</span></code> in the <code class="docutils literal notranslate"><span class="pre">example/</span></code>
+folder. <code class="docutils literal notranslate"><span class="pre">intro.ipynb</span></code> is a Jupyter Notebook file, and <code class="docutils literal notranslate"><span class="pre">intro.pdf</span></code> is the
+converted PDF.</p>
+<div class="admonition caution">
+<p class="admonition-title">Caution</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">intro.ipynb</span></code> file is migrated from JupyterLite, licensed under the
+terms of the BSD 3-Clause License. Please ensure compliance with the license
+terms when using or distributing this file.</p>
+<p>The original version of this file include some Emoji characters, I removed
+them for converting this file to PDF via LaTeX. You can clicking <a class="reference external" href="https://github.com/jupyterlite/jupyterlite/blob/main/examples/intro.ipynb">this link</a>
+to visit the original file.</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Pandoc Jupyter Notebook Convert Tool" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="build.html" class="btn btn-neutral float-right" title="Building the Executable" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, GitHubonline1396529.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

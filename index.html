@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pandoc Jupyter Notebook Convert Tool &mdash; nbpandoc 0.1.2.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=24272eba"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Usage" href="example.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="#" class="icon icon-home">
+            nbpandoc
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="example.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example.html#examples">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="build.html">Building the Executable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about.html">Version</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about.html#license">License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">nbpandoc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Pandoc Jupyter Notebook Convert Tool</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="pandoc-jupyter-notebook-convert-tool">
+<h1>Pandoc Jupyter Notebook Convert Tool<a class="headerlink" href="#pandoc-jupyter-notebook-convert-tool" title="Link to this heading"></a></h1>
+<section id="explainiations">
+<h2>Explainiations<a class="headerlink" href="#explainiations" title="Link to this heading"></a></h2>
+<p>Imagine this: When you want to convert a Markdown file to a PDF via LaTeX with
+specific formatting requirements using pandoc, you typically use the following
+command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pandoc<span class="w"> </span>&lt;filename&gt;.md<span class="w"> </span>--output<span class="o">=</span>&lt;filename&gt;.pdf
+</pre></div>
+</div>
+<p>However, this process becomes particularly challenging with Jupyter Notebook
+files. When attempting this conversion, you may encounter numerous issues. I’ve
+compiled the potential problems as follows:</p>
+<ol class="arabic simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">pandoc</span></code> command cannot recognize Jupyter Notebook’s first-level
+heading as the document title. Even with <code class="docutils literal notranslate"><span class="pre">--shift-heading-level-by=-1</span></code>, the
+generated PDF’s title remains empty, requiring additional <code class="docutils literal notranslate"><span class="pre">--title</span></code>
+parameter specification.</p></li>
+<li><p>Pandoc doesn’t read metadata information from Jupyter Notebook’s JSON
+metadata (such as <code class="docutils literal notranslate"><span class="pre">author</span></code>, <code class="docutils literal notranslate"><span class="pre">date</span></code>, or automatic section numbering via
+<code class="docutils literal notranslate"><span class="pre">&quot;numbersections&quot;:</span> <span class="pre">true</span></code>). These must be specified through command-line
+parameters, resulting in verbose commands <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p></li>
+<li><p>When Chinese characters are present in Jupyter Notebooks, you need to use the
+<code class="docutils literal notranslate"><span class="pre">ctexart</span></code> document class and specify XeLaTeX as the compilation engine.
+This requires first exporting to plain TeX, manually editing the exported
+text to modify document classes and add necessary packages.</p></li>
+<li><p>Different Jupyter Notebook files require re-specifying these parameters each</p></li>
+<li><p>time, creating significant redundant work.</p></li>
+</ol>
+<p>You might ask: Why not use Jupyter NBConvert? Well, this might sound offensive,
+but the truth is: Jupyter NBConvert can be quite difficult for some users.
+Specifically:</p>
+<ol class="arabic simple">
+<li><p>It doesn’t support directly specifying existing LaTeX document classes for
+PDF exports, instead requiring users to write JinJa2 templates (NBConvert
+doesn’t support other formats like <code class="docutils literal notranslate"><span class="pre">*.cls</span></code> templates), meaning users must
+invest extra time learning JinJa2.</p></li>
+<li><p>There’s virtually no existing gallery for downloadable NBConvert templates,
+forcing users to either spend considerable time learning template writing or
+struggling to find usable ones.</p></li>
+<li><p>If maintaining a personal LaTeX template (like myself), you must
+simultaneously maintain a JinJa2 template for Jupyter exports.</p></li>
+</ol>
+<p>To address these challenges, I developed this Python command-line utility to
+convert Jupyter Notebooks into other formats.</p>
+</section>
+<section id="features">
+<h2>Features<a class="headerlink" href="#features" title="Link to this heading"></a></h2>
+<p>Theoretically, this program <code class="docutils literal notranslate"><span class="pre">nbpandoc</span></code> defaults to PDF via LaTeX conversion,
+but actually reserves additional interfaces for users to specify other output
+formats (Such as <cite>*.docx</cite>). See Examples and Usage sections for details.
+Additionally, it can accept Markdown input similar to my previous project
+<a class="reference external" href="https://github.com/GitHubonline1396529/panargs">panargs</a>, though this feature
+remains untested so far.</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id2" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>For Markdown files, this information can be specified in YAML headers.</p>
+</aside>
+</aside>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="example.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example.html#examples">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="example.html#specify-export-format-in-jupyter-metadata">Specify Export Format in Jupyter Metadata</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example.html#specify-extra-pandoc-options-in-command-line">Specify Extra Pandoc Options in Command Line</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example.html#specify-pandoc-options-in-notebook-metadata">Specify Pandoc Options in Notebook Metadata</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example.html#a-demo-file">A Demo File</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="build.html">Building the Executable</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="build.html#activate-the-virtual-environment">Activate the Virtual Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build.html#install-required-packages">Install Required Packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build.html#build-the-executable">Build the Executable</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Modules</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="nbpandoc.html">nbpandoc module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="about.html">Version</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about.html#license">License</a></li>
+</ul>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="example.html" class="btn btn-neutral float-right" title="Usage" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, GitHubonline1396529.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
