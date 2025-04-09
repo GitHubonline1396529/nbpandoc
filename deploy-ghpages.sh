@@ -53,7 +53,7 @@ EXAMPLE_DIR="example"
 DEPLOY_BRANCH="gh-pages"
 TEMP_DIR="$(mktemp -d)"
 TEMP_DIR_FOR_EXAMPLE_FILES="$(mktemp -d)"
-MESSAGE="deploy website $(date '+%Y-%m-%d %H:%M:%S')"
+MESSAGE=":package: Deploy website $(date '+%Y-%m-%d %H:%M:%S')"
 
 echo "
 It will switch back to branch $DEPLOY_BRANCH after the deployment.
@@ -107,6 +107,9 @@ else
 fi
 
 cp -r "$TEMP_DIR_FOR_EXAMPLE_FILES"/* ./"$EXAMPLE_DIR"/
+
+# Ignore nojekyll
+touch ./.nojekyll
 
 # Add and commit.
 git add .
