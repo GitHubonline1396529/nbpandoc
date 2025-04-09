@@ -87,6 +87,7 @@ fi
 git rm -rf . > /dev/null 2>&1 || true
 rm -rf *
 
+# Remove files and directories start with `.*` execept for `.git`.
 for item in .[^.]*; do
     if [ "$item" != ".git" ]; then
         rm -rf "$item"
@@ -96,10 +97,13 @@ done
 # Copy new files.
 cp -r "$TEMP_DIR"/* .
 
-if [! -d "$EXAMPLE_DIR" ]; then
-  echo "$EXAMPLE_DIR does exist."
+if [ ! -d "$EXAMPLE_DIR" ]; then
+  echo "The example directory $EXAMPLE_DIR doesn't exist."
   echo "Create it now..."
   mkdir "$EXAMPLE_DIR"
+else
+  echo "The example directory $EXAMPLE_DIR exist."
+  echo "We're going to copy the files."
 fi
 
 cp -r "$TEMP_DIR_FOR_EXAMPLE_FILES"/* ./"$EXAMPLE_DIR"/
