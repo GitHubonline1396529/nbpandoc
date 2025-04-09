@@ -96,13 +96,13 @@ done
 # Copy new files.
 cp -r "$TEMP_DIR"/* .
 
-if [ -d "$EXAMPLE_DIR" ]; then
+if [! -d "$EXAMPLE_DIR" ]; then
   echo "$EXAMPLE_DIR does exist."
   echo "Create it now..."
   mkdir "$EXAMPLE_DIR"
 fi
 
-cp -r "$TEMP_DIR_FOR_EXAMPLE_FILES"/* ./"$EXAMPLE_DIR"
+cp -r "$TEMP_DIR_FOR_EXAMPLE_FILES"/* ./"$EXAMPLE_DIR"/
 
 # Add and commit.
 git add .
