@@ -36,4 +36,4 @@ doc/build
 
 # Personal files
 .vscode
-deploy-ghpages.sh
+# deploy-ghpages.sh
