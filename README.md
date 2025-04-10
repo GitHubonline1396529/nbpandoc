@@ -50,7 +50,7 @@ nbpandoc <filename>.ipynb
 > If Pandoc is not installed, refer to the official Pandoc documentation for 
 > [installation instructions](https://pandoc.org/installing.html).
 
-Flags of `pandoc` command can be assigned in the metadata of the Notebook or with the command-line option `--flag`. See the document for more details.
+Flags of `pandoc` command can be assigned in the metadata of the Notebook or with the command-line option `--flag`. See the [document](https://githubonline1396529.github.io/nbpandoc/) for more details.
 
 > [!note]
 >
