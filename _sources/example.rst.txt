@@ -191,9 +191,14 @@ behavior is to convert the Jupyter Notebook to a PDF file.
 A Demo File
 ~~~~~~~~~~~
 
-You can find the demo file ``intro.ipynb`` and ``intro.pdf`` in the ``example/`` 
+You can find the demo file ``intro.ipynb`` and ``intro.pdf`` in the ``example/``
 folder. ``intro.ipynb`` is a Jupyter Notebook file, and ``intro.pdf`` is the 
 converted PDF.
+
+Here's the link to file.
+
+* `The Jupyter Notebook <example/intro.ipynb>`_.
+* `Exported PDF file <example/intro.pdf>`_.
 
 .. caution::
 
