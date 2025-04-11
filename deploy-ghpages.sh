@@ -42,7 +42,7 @@
 #
 # Name: deploy-ghpages.sh
 # Author: ChatGPT
-# Version: 0.0.1.0
+# Version: 0.0.1.1
 # Date: 2025-04-09
 # License: MIT License Copyright 2025 GitHubonline1396529
 
