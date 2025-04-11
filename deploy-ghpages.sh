@@ -40,6 +40,7 @@
 # Example:
 #   ./deploy-ghpages.sh
 #
+# Name: deploy-ghpages.sh
 # Author: ChatGPT
 # Version: 0.0.1.0
 # Date: 2025-04-09
